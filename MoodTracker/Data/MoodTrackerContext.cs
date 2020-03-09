@@ -11,5 +11,7 @@ namespace MoodTracker.Data
         }
 
         public DbSet<DailyMood> DailyMood { get; set; }
+
+        public DbSet<Mood> Moods { get; set; }
     }
 }

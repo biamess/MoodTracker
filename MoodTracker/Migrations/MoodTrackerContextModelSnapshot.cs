@@ -49,15 +49,15 @@ namespace MoodTracker.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PercentIntensity")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Mood");
+                    b.ToTable("Moods");
                 });
 
             modelBuilder.Entity("MoodTracker.Models.DailyMood", b =>

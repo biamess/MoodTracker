@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoodTracker.Data;
 using MoodTracker.Models;
+using MoodTracker.ViewModels;
 
 namespace MoodTracker.Controllers
 {
@@ -44,9 +45,14 @@ namespace MoodTracker.Controllers
         }
 
         // GET: DailyMoods/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            DailyMoodViewModel dailyMoodVM = new DailyMoodViewModel
+            {
+                MoodList = new SelectList(await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name), "Key", "Value")
+            };
+
+            return View(dailyMoodVM);
         }
 
         // POST: DailyMoods/Create
@@ -54,7 +60,7 @@ namespace MoodTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,Notes")] DailyMood dailyMood)
+        public async Task<IActionResult> Create([Bind("Id,Date,MoodId,Notes")] DailyMood dailyMood)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +92,7 @@ namespace MoodTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Notes")] DailyMood dailyMood)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Mood,Notes")] DailyMood dailyMood)
         {
             if (id != dailyMood.Id)
             {

@@ -10,7 +10,7 @@ using MoodTracker.Data;
 namespace MoodTracker.Migrations
 {
     [DbContext(typeof(MoodTrackerContext))]
-    [Migration("20200220182936_InitialCreate")]
+    [Migration("20200308213532_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,15 +51,15 @@ namespace MoodTracker.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PercentIntensity")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Mood");
+                    b.ToTable("Moods");
                 });
 
             modelBuilder.Entity("MoodTracker.Models.DailyMood", b =>
