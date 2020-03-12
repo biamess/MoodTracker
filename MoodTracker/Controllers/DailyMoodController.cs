@@ -23,7 +23,20 @@ namespace MoodTracker.Controllers
         // GET: DailyMoods
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DailyMood.ToListAsync());
+            List<DailyMood> dailyMoods = await (from dailyMood in _context.DailyMood
+                                 join mood in _context.Moods on dailyMood.MoodId equals mood.Id into tmp
+                                 from m in tmp.DefaultIfEmpty()
+
+                                 select new DailyMood
+                                 {
+                                     Id = dailyMood.Id,
+                                     MoodId = dailyMood.MoodId,
+                                     Mood = m,
+                                     Date = dailyMood.Date,
+                                     Notes = dailyMood.Notes
+                                 }
+                                 ).ToListAsync();
+            return View(dailyMoods);
         }
 
         // GET: DailyMoods/Details/5
@@ -49,7 +62,7 @@ namespace MoodTracker.Controllers
         {
             DailyMoodViewModel dailyMoodVM = new DailyMoodViewModel
             {
-                MoodList = new SelectList(await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name), "Key", "Value")
+                MoodList = new SelectList(await _context.Moods.ToDictionaryAsync(k => k, v => v.Name), "Key", "Value")
             };
 
             return View(dailyMoodVM);
@@ -62,6 +75,7 @@ namespace MoodTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Date,MoodId,Notes")] DailyMood dailyMood)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(dailyMood);
@@ -84,7 +98,16 @@ namespace MoodTracker.Controllers
             {
                 return NotFound();
             }
-            return View(dailyMood);
+
+            Dictionary<int, string> moods = await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name);
+
+            DailyMoodViewModel dailyMoodVM = new DailyMoodViewModel
+            {
+                DailyMood = dailyMood,
+                MoodList = new SelectList(moods, "Key", "Value", moods[dailyMood.MoodId])
+            };
+
+            return View(dailyMoodVM);
         }
 
         // POST: DailyMoods/Edit/5

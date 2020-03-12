@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MoodTracker.Models.DailyMood>
+﻿@model IEnumerable<DailyMood>;
 
 @{
     ViewData["Title"] = "Index";
@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.Date)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Mood)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Notes)
             </th>
             <th></th>
@@ -26,6 +29,10 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                <div style="@("height: 1em; width: 1em; display:inline-block; background-color:" + item.Mood.Color + ";")"> </div>
+                @Html.DisplayFor(modelItem => item.Mood.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Notes)
