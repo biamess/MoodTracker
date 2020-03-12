@@ -1,4 +1,4 @@
-﻿@model MoodTracker.Models.Mood
+﻿@model MoodTracker.Models.Mood;
 
 @{
     ViewData["Title"] = "Create";
@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Color" class="control-label"></label>
-                <input asp-for="Color" class="form-control" />
+                <input type="color" value="#ff0000" asp-for="Color" class="form-control">
                 <span asp-validation-for="Color" class="text-danger"></span>
             </div>
             <div class="form-group">

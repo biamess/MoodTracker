@@ -27,8 +27,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Color)
+            <td style="@("background-color:" + item.Color)">
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
