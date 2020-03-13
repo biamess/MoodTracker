@@ -4,6 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
+@section Styles {
+    <link href="@Url.Content("~/css/moodTable.css")" rel="stylesheet" type="text/css" />
+}
+
 <h1>Index</h1>
 
 <p>
@@ -25,24 +29,25 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                <div style="@("height: 1em; width: 1em; display:inline-block; background-color:" + item.Mood.Color + ";")"> </div>
-                @Html.DisplayFor(modelItem => item.Mood.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    <div class="moodCell" style="@("background-color:" + item.Mood.Color + ";")"> </div>
+                    @Html.DisplayFor(modelItem => item.Mood.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Notes)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
