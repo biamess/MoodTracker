@@ -23,20 +23,18 @@ namespace MoodTracker.Controllers
         // GET: DailyMoods
         public async Task<IActionResult> Index()
         {
-            List<DailyMood> dailyMoods = await (from dailyMood in _context.DailyMood
-                                 join mood in _context.Moods on dailyMood.MoodId equals mood.Id into tmp
-                                 from m in tmp.DefaultIfEmpty()
+            DailyMoodIndexViewModel vm = new DailyMoodIndexViewModel
+            {
 
-                                 select new DailyMood
-                                 {
-                                     Id = dailyMood.Id,
-                                     MoodId = dailyMood.MoodId,
-                                     Mood = m,
-                                     Date = dailyMood.Date,
-                                     Notes = dailyMood.Notes
-                                 }
-                                 ).ToListAsync();
-            return View(dailyMoods);
+                Dates = GetDatesInMonth(DateTime.Now.Year, DateTime.Now.Month),
+
+                DailyMoods = await _context.DailyMoods
+                .Include(d => d.Mood)
+                .AsNoTracking()
+                .ToDictionaryAsync(k => k.Date, v => v)
+        };
+
+            return View(vm);
         }
 
         // GET: DailyMoods/Details/5
@@ -47,7 +45,7 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            var dailyMood = await _context.DailyMood
+            var dailyMood = await _context.DailyMoods
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (dailyMood == null)
             {
@@ -93,7 +91,7 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            var dailyMood = await _context.DailyMood.FindAsync(id);
+            var dailyMood = await _context.DailyMoods.FindAsync(id);
             if (dailyMood == null)
             {
                 return NotFound();
@@ -153,7 +151,7 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            var dailyMood = await _context.DailyMood
+            var dailyMood = await _context.DailyMoods
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (dailyMood == null)
             {
@@ -168,15 +166,22 @@ namespace MoodTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var dailyMood = await _context.DailyMood.FindAsync(id);
-            _context.DailyMood.Remove(dailyMood);
+            var dailyMood = await _context.DailyMoods.FindAsync(id);
+            _context.DailyMoods.Remove(dailyMood);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DailyMoodExists(int id)
         {
-            return _context.DailyMood.Any(e => e.Id == id);
+            return _context.DailyMoods.Any(e => e.Id == id);
+        }
+
+        public static List<DateTime> GetDatesInMonth(int year, int month)
+        {
+            return Enumerable.Range(1, DateTime.DaysInMonth(year, month))  // Days: 1, 2 ... 31 etc.
+                             .Select(day => new DateTime(year, month, day)) // Map each day to a date
+                             .ToList(); // Load dates into a list
         }
     }
 }

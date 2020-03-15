@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MoodTracker.Data;
+using MoodTracker.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MoodTracker.Models
+namespace MoodTracker.Data
 {
-    public class SeedData
+    public static class SeedData
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
@@ -22,32 +22,37 @@ namespace MoodTracker.Models
                     return;   // DB has been seeded
                 }
 
-                context.Moods.AddRange(
+                Mood[] moodSeedData = new Mood[] {
                     new Mood
                     {
                         Id = 1,
-                        Name = "excited",
+                        Name = "Excited",
                         Color = "#dd3333"
                     },
                     new Mood
                     {
                         Id = 2,
-                        Name = "sad",
+                        Name = "Sad",
                         Color = "#3333ff"
                     },
                     new Mood
                     {
                         Id = 3,
-                        Name = "content",
+                        Name = "Content",
                         Color = "#33dd33"
                     },
                     new Mood
                     {
                         Id = 4,
-                        Name = "worried",
+                        Name = "Worried",
                         Color = "#0000ff"
                     }
-                    );
+                };
+
+                foreach (Mood m in moodSeedData)
+                {
+                    context.Moods.Add(m);
+                }
 
                 //context.Moods.AddRange();
                 context.SaveChanges();

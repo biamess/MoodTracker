@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MoodTracker.Data;
 using MoodTracker.Models;
 using System;
 
@@ -20,7 +19,7 @@ namespace MoodTracker
 
                 try
                 {
-                    SeedData.Initialize(services);
+                    MoodTracker.Data.SeedData.Initialize(services);
                 }
                 catch (Exception ex)
                 {

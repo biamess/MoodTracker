@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DailyMood>;
+﻿@model MoodTracker.ViewModels.DailyMoodIndexViewModel;
 
 @{
     ViewData["Title"] = "Index";
@@ -17,35 +17,42 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                @Html.DisplayFor(model => model.Dates[0].Month)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Mood)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var day in Model.Dates)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Date)
+                    @Html.DisplayFor(modelItem => day.DayOfWeek)
                 </td>
                 <td>
-                    <div class="moodCell" style="@("background-color:" + item.Mood.Color + ";")"> </div>
-                    @Html.DisplayFor(modelItem => item.Mood.Name)
+                    <div class="moodCell" style="@("background-color:" + (Model.DailyMoods.ContainsKey(day) ? Model.DailyMoods[day].Mood.Color : "#ffffff") + ";")"> </div>
+                    @if (Model.DailyMoods.ContainsKey(day))
+                    {
+                        <div>
+                            @Html.DisplayFor(modelItem => Model.DailyMoods[day].Mood.Name)
+                        </div>
+                    }                
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Notes)
-                </td>
+                    @if (Model.DailyMoods.ContainsKey(day))
+                    {
+                        <div>
+                            @Html.DisplayFor(modelItem => Model.DailyMoods[day].Notes)
+                        </div>
+                    }
+                    </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    @if (Model.DailyMoods.ContainsKey(day)) { 
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@Model.DailyMoods[day].Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@Model.DailyMoods[day].Id">Delete</a>
+                        </div>
+                    }
                 </td>
             </tr>
         }
