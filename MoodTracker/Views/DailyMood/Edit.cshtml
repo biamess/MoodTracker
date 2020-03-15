@@ -12,23 +12,23 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="DailyMood.Id" />
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="DailyMood.Date" class="control-label"></label>
-                <input asp-for="DailyMood.Date" class="form-control" />
-                <span asp-validation-for="DailyMood.Date" class="text-danger"></span>
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DailyMood.MoodId" class="control-label">Mood</label>
+                <label asp-for="MoodId" class="control-label">Mood</label>
 
-                @Html.DropDownListFor(m => m.DailyMood.MoodId, Model.MoodList, "Select Mood", new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.MoodId, Model.MoodList, "Select Mood", new { @class = "form-control" })
 
-                <span asp-validation-for="DailyMood.MoodId" class="text-danger"></span>
+                <span asp-validation-for="MoodId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DailyMood.Notes" class="control-label"></label>
-                <input asp-for="DailyMood.Notes" class="form-control" />
-                <span asp-validation-for="DailyMood.Notes" class="text-danger"></span>
+                <label asp-for="Notes" class="control-label"></label>
+                <input asp-for="Notes" class="form-control" />
+                <span asp-validation-for="Notes" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

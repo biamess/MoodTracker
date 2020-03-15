@@ -60,7 +60,8 @@ namespace MoodTracker.Controllers
         {
             DailyMoodViewModel dailyMoodVM = new DailyMoodViewModel
             {
-                MoodList = new SelectList(await _context.Moods.ToDictionaryAsync(k => k, v => v.Name), "Key", "Value")
+                Date = DateTime.Today,
+                MoodList = new SelectList(await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name), "Key", "Value")
             };
 
             return View(dailyMoodVM);
@@ -71,16 +72,26 @@ namespace MoodTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,MoodId,Notes")] DailyMood dailyMood)
+        public async Task<IActionResult> Create([Bind("Id,Date,MoodId,Notes")] DailyMoodViewModel vm)
         {
+
+
+           DailyMood dailyMood = new DailyMood();
 
             if (ModelState.IsValid)
             {
+                dailyMood.Date = vm.Date;
+                dailyMood.MoodId = vm.MoodId;
+                dailyMood.Notes = vm.Notes;
+
                 _context.Add(dailyMood);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(dailyMood);
+
+            vm.MoodList = new SelectList(await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name), "Key", "Value");
+
+            return View(vm);
         }
 
         // GET: DailyMoods/Edit/5
@@ -91,21 +102,9 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            var dailyMood = await _context.DailyMoods.FindAsync(id);
-            if (dailyMood == null)
-            {
-                return NotFound();
-            }
+            DailyMoodViewModel vm = await GetDailyMoodViewModel(id.GetValueOrDefault());
 
-            Dictionary<int, string> moods = await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name);
-
-            DailyMoodViewModel dailyMoodVM = new DailyMoodViewModel
-            {
-                DailyMood = dailyMood,
-                MoodList = new SelectList(moods, "Key", "Value", moods[dailyMood.MoodId])
-            };
-
-            return View(dailyMoodVM);
+            return View(vm);
         }
 
         // POST: DailyMoods/Edit/5
@@ -113,7 +112,7 @@ namespace MoodTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Mood,Notes")] DailyMood dailyMood)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,MoodId,Notes")] DailyMood dailyMood)
         {
             if (id != dailyMood.Id)
             {
@@ -140,7 +139,9 @@ namespace MoodTracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(dailyMood);
+
+            DailyMoodViewModel vm = await GetDailyMoodViewModel(id);
+            return View(vm);
         }
 
         // GET: DailyMoods/Delete/5
@@ -182,6 +183,28 @@ namespace MoodTracker.Controllers
             return Enumerable.Range(1, DateTime.DaysInMonth(year, month))  // Days: 1, 2 ... 31 etc.
                              .Select(day => new DateTime(year, month, day)) // Map each day to a date
                              .ToList(); // Load dates into a list
+        }
+
+        public async Task<DailyMoodViewModel> GetDailyMoodViewModel(int dailyMoodId)
+        {
+            var dailyMood = await _context.DailyMoods.FindAsync(dailyMoodId);
+            if (dailyMood == null)
+            {
+                return null;
+            }
+
+            Dictionary<int, string> moods = await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name);
+
+            DailyMoodViewModel dailyMoodVM = new DailyMoodViewModel
+            {
+
+                Id = dailyMood.Id,
+                Date = dailyMood.Date,
+                MoodId = dailyMood.MoodId,
+                Notes = dailyMood.Notes,
+                MoodList = new SelectList(moods, "Key", "Value", moods[dailyMood.MoodId])
+            };
+            return dailyMoodVM;
         }
     }
 }
