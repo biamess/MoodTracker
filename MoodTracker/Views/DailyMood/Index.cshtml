@@ -17,7 +17,9 @@
     @foreach (var month in Model.Dates) {
     <tr>
         <th>
-            @Html.DisplayFor(model => month[0].Month)
+            <div>
+                @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(month[0].Month)
+            </div>
         </th>
 
         @foreach (var day in month) {
