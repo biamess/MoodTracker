@@ -26,7 +26,7 @@ namespace MoodTracker.Controllers
             DailyMoodIndexViewModel vm = new DailyMoodIndexViewModel
             {
 
-                Dates = GetDatesInMonth(DateTime.Now.Year, DateTime.Now.Month),
+                Dates = GetDatesInYear(DateTime.Now.Year, DateTime.Now.Month),
 
                 DailyMoods = await _context.DailyMoods
                 .Include(d => d.Mood)
@@ -176,6 +176,32 @@ namespace MoodTracker.Controllers
         private bool DailyMoodExists(int id)
         {
             return _context.DailyMoods.Any(e => e.Id == id);
+        }
+
+        /// <summary>
+        /// For a given year and month, return a <list type="<list<DateTime>>">list</list> containing all the dates of the past year.
+        /// </summary>
+        /// <param name="year">Year</param>
+        /// <param name="month">Month (0-11)</param>
+        /// <returns><list type="<list<DateTime>>">list</list> containing all the dates of the past year.</returns>
+        public static List<List<DateTime>> GetDatesInYear(int year, int month)
+        {
+            List<List<DateTime>> dates = new List<List<DateTime>>();
+            int currMonth = month + 1;
+            int currYear = year - 1;
+
+            for (int i=1; i<=12; i++)
+            {
+                if (currMonth == 13)
+                {
+                    currMonth = 1;
+                    currYear++;
+                }
+                dates.Add(GetDatesInMonth(currYear, currMonth));
+
+                currMonth += 1;
+            }
+            return dates;
         }
 
         public static List<DateTime> GetDatesInMonth(int year, int month)

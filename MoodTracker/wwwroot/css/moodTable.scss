@@ -1,8 +1,51 @@
 ﻿body {
 }
 
+tr {
+    display: block;
+    float: left;
+}
+
+th, td {
+    display: block;
+}
+
+td {
+    padding: .1rem;
+}
+
 .moodCell {
-    height: 1em;
-    width: 1em;
+    height: 2em;
+    width: 2em;
     display: inline-block;
 }
+
+/* Tooltip styles */
+.tooltipContainer {
+    position: relative;
+}
+
+.tooltipContainer .actionTooltip {
+    visibility: hidden;
+    text-align: center;
+    font-size: 1em;
+    padding: 3px 5px;
+    border-radius: 3px;
+    position: absolute;
+    width: 200px;
+    background-color: #ffffff;
+    border: 1px solid #c9c6c6;
+    box-shadow: #808080 2px 2px; 
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+
+    z-index: 1;
+}
+
+.tooltipContainer:hover .actionTooltip {
+    visibility: visible;
+}
+
+/* End Tooltip styles */
+

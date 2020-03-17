@@ -14,47 +14,25 @@
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
+    @foreach (var month in Model.Dates) {
+    <tr>
+        <th>
+            @Html.DisplayFor(model => month[0].Month)
+        </th>
 
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var day in Model.Dates)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => day.DayOfWeek)
-                </td>
-                <td>
-                    <div class="moodCell" style="@("background-color:" + (Model.DailyMoods.ContainsKey(day) ? Model.DailyMoods[day].Mood.Color : "#ffffff") + ";")"> </div>
-                    @if (Model.DailyMoods.ContainsKey(day))
-                    {
-                        <div>
-                            @Html.DisplayFor(modelItem => Model.DailyMoods[day].Mood.Name)
-                        </div>
-                    }                
-                </td>
-                <td>
-                    @if (Model.DailyMoods.ContainsKey(day))
-                    {
-                        <div>
-                            @Html.DisplayFor(modelItem => Model.DailyMoods[day].Notes)
-                        </div>
-                    }
-                    </td>
-                <td>
-                    @if (Model.DailyMoods.ContainsKey(day)) { 
-                        <div>
+        @foreach (var day in month) {
+            <td>
+                <div class="moodCell tooltipContainer" style="@("background-color:" + (Model.DailyMoods.ContainsKey(day) ? Model.DailyMoods[day].Mood.Color : "#ffffff") + ";")">
+                    @if (Model.DailyMoods.ContainsKey(day)) {
+                        <div class="actionTooltip">
                             <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">Edit</a> |
                             <a asp-action="Details" asp-route-id="@Model.DailyMoods[day].Id">Details</a> |
                             <a asp-action="Delete" asp-route-id="@Model.DailyMoods[day].Id">Delete</a>
                         </div>
                     }
-                </td>
-            </tr>
+                </div>
+            </td>
         }
-    </tbody>
+    </tr>
+    }
 </table>

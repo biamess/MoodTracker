@@ -8,7 +8,7 @@ namespace MoodTracker.ViewModels
 {
     public class DailyMoodIndexViewModel
     {
-        public List<DateTime> Dates { get; set; }
+        public List<List<DateTime>> Dates { get; set; }
 
         public Dictionary<DateTime, DailyMood> DailyMoods { get; set; }
     }
