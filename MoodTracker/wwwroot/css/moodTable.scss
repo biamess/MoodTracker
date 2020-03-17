@@ -25,26 +25,50 @@ td {
     position: relative;
 }
 
+.actionTooltip {
+    transition-delay: .3s;
+    opacity: 0;
+    transition: visibility 0.3s linear,opacity 0.3s linear;
+}
+
 .tooltipContainer .actionTooltip {
     visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.4s linear,opacity 0.4s linear;
+
     text-align: center;
-    font-size: 1em;
-    padding: 3px 5px;
+    font-size: 16px;
+    padding: 3px 0;
     border-radius: 3px;
     position: absolute;
-    width: 200px;
+    width: 180px;
     background-color: #ffffff;
     border: 1px solid #c9c6c6;
-    box-shadow: #808080 2px 2px; 
-    bottom: 125%;
+    box-shadow: #808080 2px 2px;
+    bottom: 100%;
     left: 50%;
-    margin-left: -100px;
-
+    margin-left: -90px;
     z-index: 1;
 }
 
 .tooltipContainer:hover .actionTooltip {
     visibility: visible;
+    opacity: 1;
+}
+
+.actionTooltip:hover {
+    visibility: visible;
+}
+
+.tooltipContainer .actionTooltip::after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
 }
 
 /* End Tooltip styles */
