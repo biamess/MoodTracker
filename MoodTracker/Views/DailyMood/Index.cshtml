@@ -13,7 +13,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="moodTable">
     @foreach (var month in Model.Dates) {
     <tr>
         <th>
@@ -26,11 +26,14 @@
             <td>
                 <div class="moodCell tooltipContainer" style="@("background-color:" + (Model.DailyMoods.ContainsKey(day) ? Model.DailyMoods[day].Mood.Color : "#ffffff") + ";")">
                     @if (Model.DailyMoods.ContainsKey(day)) {
-                        <div class="actionTooltip">
-                            <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@Model.DailyMoods[day].Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@Model.DailyMoods[day].Id">Delete</a>
+                    <div class="actionTooltip">
+                        <div> 
+                            @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
                         </div>
+                        <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@Model.DailyMoods[day].Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@Model.DailyMoods[day].Id">Delete</a>
+                    </div>
                     }
                 </div>
             </td>
