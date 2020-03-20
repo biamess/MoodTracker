@@ -10,48 +10,53 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="moodTable">
-    @foreach (var month in Model.Dates) {
-    <tr>
-        <th>
-            <div>
-                @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(month[0].Month)
-            </div>
-        </th>
-
-        @foreach (var day in month) {
-    <td>
-        @if (Model.DailyMoods.ContainsKey(day))
+@if (!Model.DailyMoods.ContainsKey(DateTime.Today))
+{
+    <p>
+        <a asp-action="Create">Log today's mood</a>
+    </p>
+}
+    <table class="moodTable">
+        @foreach (var month in Model.Dates)
         {
-        <div class="moodCell tooltipContainer" style="@("background-color:" + (Model.DailyMoods.ContainsKey(day) ? Model.DailyMoods[day].Mood.Color : "#ffffff") + ";")">
-            <div class="actionTooltip">
-                <div>
-                    @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
-                </div>
-                <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@Model.DailyMoods[day].Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@Model.DailyMoods[day].Id">Delete</a>
-            </div>
-        </div>
-        }
-        else
-        {
-            <a asp-action="Create" asp-route-date="@day">
-                <div class="moodCell tooltipContainer" style="@("background-color:#ffffff;")">
-                    <div class="actionTooltip">
-                        <div> Log mood for </div>
-                        <div>
-                            @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
-                        </div>
+            <tr>
+                <th>
+                    <div>
+                        @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(month[0].Month)
                     </div>
-                </div>
-            </a>
+                </th>
+
+                @foreach (var day in month)
+                {
+                    <td>
+                        @if (Model.DailyMoods.ContainsKey(day))
+                        {
+                            <div class="moodCell tooltipContainer" style="@("background-color:" + (Model.DailyMoods.ContainsKey(day) ? Model.DailyMoods[day].Mood.Color : "#ffffff") + ";")">
+                                <div class="actionTooltip">
+                                    <div>
+                                        @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
+                                    </div>
+                                    <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@Model.DailyMoods[day].Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@Model.DailyMoods[day].Id">Delete</a>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <a asp-action="Create" asp-route-date="@day">
+                                <div class="moodCell tooltipContainer" style="@("background-color:#ffffff;")">
+                                    <div class="actionTooltip">
+                                        <div> Log mood for </div>
+                                        <div>
+                                            @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                    </td>
+                }
+            </tr>
         }
-    </td>
-        }
-    </tr>
-    }
-</table>
+    </table>
