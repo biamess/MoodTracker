@@ -13,6 +13,7 @@ namespace MoodTracker.ViewModels
 
         [BindProperty]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
         [BindProperty]

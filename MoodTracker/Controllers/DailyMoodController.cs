@@ -56,11 +56,13 @@ namespace MoodTracker.Controllers
         }
 
         // GET: DailyMoods/Create
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(DateTime? date)
         {
+            DateTime defaultDate = date ?? DateTime.Today;
+
             DailyMoodViewModel dailyMoodVM = new DailyMoodViewModel
             {
-                Date = DateTime.Today,
+                Date = defaultDate.Date,
                 MoodList = new SelectList(await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name), "Key", "Value")
             };
 
@@ -74,8 +76,6 @@ namespace MoodTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Date,MoodId,Notes")] DailyMoodViewModel vm)
         {
-
-
            DailyMood dailyMood = new DailyMood();
 
             if (ModelState.IsValid)

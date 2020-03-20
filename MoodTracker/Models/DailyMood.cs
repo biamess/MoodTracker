@@ -11,7 +11,6 @@ namespace MoodTracker.Models
     {
         public int Id { get; set; }
 
-        [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
         public int MoodId { get; set; }
