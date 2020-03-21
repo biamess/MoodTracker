@@ -4,25 +4,44 @@
     ViewData["Title"] = "Details";
 }
 
+@section Styles {
+    <link href="@Url.Content("~/css/info.css")" rel="stylesheet" type="text/css" />
+}
+
 <h1>Details</h1>
 
 <div>
     <h4>DailyMood</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Date)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Date)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Notes)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mood.Name)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Notes)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mood.Name)
         </dd>
+        @if (!String.IsNullOrEmpty(Model.Notes))
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Notes)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Notes)
+            </dd>
+        }
     </dl>
+    <div class="note">
+        Added on
+        <span>
+            @Model.InputTimestamp.ToString("dddd, dd MMMM yyyy", System.Globalization.CultureInfo.CurrentCulture)
+        </span>
+    </div>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

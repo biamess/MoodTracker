@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+
 
 namespace MoodTracker.Models
 {
@@ -9,6 +7,7 @@ namespace MoodTracker.Models
     {
         public int Id { get; set; }
 
+        [DisplayName("Mood")]
         public string Name { get; set; }
 
         public string Color { get; set; }

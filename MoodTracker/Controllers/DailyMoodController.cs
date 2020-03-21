@@ -46,7 +46,10 @@ namespace MoodTracker.Controllers
             }
 
             var dailyMood = await _context.DailyMoods
+                .AsNoTracking()
+                .Include(d => d.Mood)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (dailyMood == null)
             {
                 return NotFound();
@@ -83,6 +86,7 @@ namespace MoodTracker.Controllers
                 dailyMood.Date = vm.Date;
                 dailyMood.MoodId = vm.MoodId;
                 dailyMood.Notes = vm.Notes;
+                dailyMood.InputTimestamp = DateTime.Now;
 
                 _context.Add(dailyMood);
                 await _context.SaveChangesAsync();

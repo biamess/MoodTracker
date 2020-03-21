@@ -2,5 +2,9 @@
   {
     "outputFile": "wwwroot/css/moodTable.css",
     "inputFile": "wwwroot/css/moodTable.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/Info.css",
+    "inputFile": "wwwroot/css/Info.scss"
   }
 ]

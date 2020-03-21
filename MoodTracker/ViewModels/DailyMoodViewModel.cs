@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MoodTracker.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 
