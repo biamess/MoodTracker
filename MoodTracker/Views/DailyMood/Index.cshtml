@@ -34,6 +34,9 @@
                             <div class="moodCell tooltipContainer" style="@("background-color:" + (Model.DailyMoods.ContainsKey(day) ? Model.DailyMoods[day].Mood.Color : "#ffffff") + ";")">
                                 <div class="actionTooltip">
                                     <div>
+                                        @Html.DisplayFor(model => model.DailyMoods[day].Mood.Name)
+                                    </div>
+                                    <div>
                                         @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
                                     </div>
                                     <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">Edit</a> |
