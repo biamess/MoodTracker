@@ -11,5 +11,7 @@ namespace MoodTracker.ViewModels
         public List<List<DateTime>> Dates { get; set; }
 
         public Dictionary<DateTime, DailyMood> DailyMoods { get; set; }
+
+        public List<Mood> Moods { get; set; }
     }
 }

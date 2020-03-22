@@ -16,6 +16,18 @@
         <a asp-action="Create">Log today's mood</a>
     </p>
 }
+    <div class="key">
+        <h5>Moods</h5>
+        @foreach (var mood in Model.Moods)
+        {
+        <div class="keyRow">
+            <div class="moodCell" style="@("background-color:" +  mood.Color + ";")"></div>
+            <div class="moodName">
+                @mood.Name
+            </div>
+        </div>
+        }
+    </div>
     <table class="moodTable">
         @foreach (var month in Model.Dates)
         {
@@ -31,7 +43,7 @@
                     <td>
                         @if (Model.DailyMoods.ContainsKey(day))
                         {
-                            <div class="moodCell tooltipContainer" style="@("background-color:" + (Model.DailyMoods.ContainsKey(day) ? Model.DailyMoods[day].Mood.Color : "#ffffff") + ";")">
+                            <div class="moodCell tooltipContainer" style="@("background-color:" +  Model.DailyMoods[day].Mood.Color + ";")">
                                 <div class="actionTooltip">
                                     <div>
                                         @Html.DisplayFor(model => model.DailyMoods[day].Mood.Name)
@@ -48,7 +60,7 @@
                         else
                         {
                             <a asp-action="Create" asp-route-date="@day">
-                                <div class="moodCell tooltipContainer" style="@("background-color:#ffffff;")">
+                                <div class="moodCell tooltipContainer" style="background-color:#ffffff;">
                                     <div class="actionTooltip">
                                         <div> Log mood for </div>
                                         <div>

@@ -17,6 +17,21 @@ th, td {
   width: 2.5em;
   display: inline-block; }
 
+.key {
+  float: left;
+  border: 1px solid #ede8e8;
+  padding: 4px;
+  margin: 20px 8px 0 8px; }
+  .key .keyRow {
+    padding: 1px; }
+  .key .moodCell {
+    height: 1.5em;
+    width: 1.5em; }
+  .key .moodName {
+    display: inline-block;
+    vertical-align: top;
+    height: 1.5em; }
+
 /* Tooltip styles */
 .tooltipContainer {
   position: relative; }

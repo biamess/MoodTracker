@@ -1,5 +1,4 @@
-﻿body {
-}
+﻿$border: #ede8e8; 
 
 tr {
     display: block;
@@ -14,7 +13,7 @@ th, td {
 .moodTable td {
     padding: .2rem;
     margin: 0;
-    border: 1px solid #ede8e8;
+    border: 1px solid $border;
     line-height: 1;
 }
 
@@ -22,6 +21,28 @@ th, td {
     height: 2.5em;
     width: 2.5em;
     display: inline-block;
+}
+
+.key {
+    float: left;
+    border: 1px solid $border;
+    padding: 4px;
+    margin: 20px 8px 0 8px;
+    
+    .keyRow {
+        padding: 1px;
+    }
+
+    .moodCell {
+        height: 1.5em;
+        width: 1.5em;
+    }
+
+    .moodName {
+        display: inline-block;
+        vertical-align: top;
+        height: 1.5em;
+    }
 }
 
 /* Tooltip styles */

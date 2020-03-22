@@ -25,13 +25,14 @@ namespace MoodTracker.Controllers
         {
             DailyMoodIndexViewModel vm = new DailyMoodIndexViewModel
             {
-
                 Dates = GetDatesInYear(DateTime.Now.Year, DateTime.Now.Month),
 
                 DailyMoods = await _context.DailyMoods
                 .Include(d => d.Mood)
                 .AsNoTracking()
-                .ToDictionaryAsync(k => k.Date, v => v)
+                .ToDictionaryAsync(k => k.Date, v => v),
+
+                Moods = await _context.Moods.ToListAsync<Mood>()
         };
 
             return View(vm);
