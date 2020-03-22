@@ -1,5 +1,6 @@
-﻿$border: #ede8e8; 
+﻿$border: #ede8e8;
 
+/* Table styles for displaying table vertically */
 tr {
     display: block;
     float: left;
@@ -9,6 +10,8 @@ tr {
 th, td {
     display: block;
 }
+/* End table styles */
+
 
 .moodTable td {
     padding: .2rem;
@@ -26,8 +29,8 @@ th, td {
 .key {
     float: left;
     border: 1px solid $border;
-    padding: 4px;
-    margin: 20px 8px 0 8px;
+    padding: 8px;
+    margin: 30px 15px 0 0;
     
     .keyRow {
         padding: 1px;

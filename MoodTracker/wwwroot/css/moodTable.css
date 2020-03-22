@@ -1,4 +1,5 @@
-﻿tr {
+﻿/* Table styles for displaying table vertically */
+tr {
   display: block;
   float: left;
   margin: 0; }
@@ -6,6 +7,7 @@
 th, td {
   display: block; }
 
+/* End table styles */
 .moodTable td {
   padding: .2rem;
   margin: 0;
@@ -20,8 +22,8 @@ th, td {
 .key {
   float: left;
   border: 1px solid #ede8e8;
-  padding: 4px;
-  margin: 20px 8px 0 8px; }
+  padding: 8px;
+  margin: 30px 15px 0 0; }
   .key .keyRow {
     padding: 1px; }
   .key .moodCell {
