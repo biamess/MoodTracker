@@ -4,22 +4,27 @@
     ViewData["Title"] = "Details";
 }
 
+@section Styles {
+    <link href="@Url.Content("~/css/moodTable.css")" rel="stylesheet" type="text/css" />
+}
+
 <h1>Details</h1>
 
 <div>
     <h4>Mood</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Color)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
+            <div class="moodCell" style="@("background-color:" +  Model.Color + ";")"></div>
             @Html.DisplayFor(model => model.Color)
         </dd>
     </dl>

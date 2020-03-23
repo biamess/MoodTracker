@@ -7,7 +7,6 @@ namespace MoodTracker.Models
     {
         public int Id { get; set; }
 
-        [DisplayName("Mood")]
         public string Name { get; set; }
 
         public string Color { get; set; }
