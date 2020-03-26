@@ -19,95 +19,98 @@ $label: #808080;
 /* End label styles */
 
 /* Mood table styles */
-.moodTable td {
-    padding: .2rem;
-    margin: 0;
-    border: 1px solid $border;
-    line-height: 1;
-}
+    .moodTable {
+        padding: 15px 0;
+        margin: auto;
+    }
 
-.moodCell {
-    height: 2em;
-    width: 2em;
-    display: inline-block;
-}
-/* End mood table styles */
-
-/* Key styles */
-.key {
-    float: left;
-    border: 1px solid $border;
-    padding: 8px;
-    margin: 5px 0;
-    
-    .keyRow {
-        padding: 0 20px;
-        float: left;
+    .moodTable td {
+        padding: .2rem;
+        margin: 0;
+        border: 1px solid $border;
+        line-height: 1;
     }
 
     .moodCell {
-        height: 1.5em;
-        width: 1.5em;
-    }
-
-    .moodName {
+        height: 2em;
+        width: 2em;
         display: inline-block;
-        vertical-align: top;
-        height: 1.5em;
     }
-}
-/* End key styles */
+    /* End mood table styles */
 
-/* Tooltip styles */
-.tooltipContainer {
-    position: relative;
-}
+    /* Key styles */
+    .key {
+        float: left;
+        border: 1px solid $border;
+        padding: 8px;
+        margin: 5px 0 15px 0;
 
-.actionTooltip {
-    transition-delay: .3s;
-    opacity: 0;
-    transition: visibility 0.3s linear,opacity 0.3s linear;
-}
+        .keyRow {
+            padding: 0 20px;
+            float: left;
+        }
 
-.tooltipContainer .actionTooltip {
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0.4s linear,opacity 0.4s linear;
+        .moodCell {
+            height: 1.5em;
+            width: 1.5em;
+        }
 
-    text-align: center;
-    font-size: 16px;
-    padding: 3px 0;
-    border-radius: 3px;
-    position: absolute;
-    width: 180px;
-    background-color: #ffffff;
-    border: 1px solid #c9c6c6;
-    box-shadow: #808080 2px 2px;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -90px;
-    z-index: 1;
-}
+        .moodName {
+            display: inline-block;
+            vertical-align: top;
+            height: 1.5em;
+        }
+    }
+    /* End key styles */
 
-.tooltipContainer:hover .actionTooltip {
-    visibility: visible;
-    opacity: 1;
-}
+    /* Tooltip styles */
+    .tooltipContainer {
+        position: relative;
+    }
 
-.actionTooltip:hover {
-    visibility: visible;
-}
+    .actionTooltip {
+        transition-delay: .3s;
+        opacity: 0;
+        transition: visibility 0.3s linear,opacity 0.3s linear;
+    }
 
-.tooltipContainer .actionTooltip::after {
-    content: " ";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: white transparent transparent transparent;
-}
+    .tooltipContainer .actionTooltip {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0.4s linear,opacity 0.4s linear;
+        text-align: center;
+        font-size: 16px;
+        padding: 3px 0;
+        border-radius: 3px;
+        position: absolute;
+        width: 180px;
+        background-color: #ffffff;
+        border: 1px solid #c9c6c6;
+        box-shadow: #808080 2px 2px;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -90px;
+        z-index: 1;
+    }
 
-/* End Tooltip styles */
+    .tooltipContainer:hover .actionTooltip {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .actionTooltip:hover {
+        visibility: visible;
+    }
+
+    .tooltipContainer .actionTooltip::after {
+        content: " ";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: white transparent transparent transparent;
+    }
+    /* End Tooltip styles */
 
