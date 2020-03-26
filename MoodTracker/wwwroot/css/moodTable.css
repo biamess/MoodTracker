@@ -1,13 +1,19 @@
-﻿/* Table styles for displaying table vertically */
-tr {
-  display: block;
-  float: left;
-  margin: 0; }
+﻿/* Label styles */
+.date {
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+  color: #808080; }
 
-th, td {
-  display: block; }
+.month {
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+  color: #808080;
+  padding: 0 3px 0 0; }
 
-/* End table styles */
+/* End label styles */
+/* Mood table styles */
 .moodTable td {
   padding: .2rem;
   margin: 0;
@@ -15,17 +21,20 @@ th, td {
   line-height: 1; }
 
 .moodCell {
-  height: 2.5em;
-  width: 2.5em;
+  height: 2em;
+  width: 2em;
   display: inline-block; }
 
+/* End mood table styles */
+/* Key styles */
 .key {
   float: left;
   border: 1px solid #ede8e8;
   padding: 8px;
-  margin: 30px 15px 0 0; }
+  margin: 5px 0; }
   .key .keyRow {
-    padding: 1px; }
+    padding: 0 20px;
+    float: left; }
   .key .moodCell {
     height: 1.5em;
     width: 1.5em; }
@@ -34,6 +43,7 @@ th, td {
     vertical-align: top;
     height: 1.5em; }
 
+/* End key styles */
 /* Tooltip styles */
 .tooltipContainer {
   position: relative; }

@@ -1,14 +1,14 @@
 ﻿@model MoodTracker.ViewModels.DailyMoodIndexViewModel;
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Year in Moods";
 }
 
 @section Styles {
     <link href="@Url.Content("~/css/moodTable.css")" rel="stylesheet" type="text/css" />
 }
 
-<h1>Index</h1>
+<h1>Year in Moods</h1>
 
 @if (!Model.DailyMoods.ContainsKey(DateTime.Today))
 {
@@ -17,7 +17,6 @@
     </p>
 }
     <div class="key">
-        <h5>Moods</h5>
         @foreach (var mood in Model.Moods)
         {
         <div class="keyRow">
@@ -29,11 +28,18 @@
         }
     </div>
     <table class="moodTable">
+        <tr>
+            <th></th>
+            @for (var i = 1; i <= 31; i++)
+            {
+                <th class="date">@i</th>
+            }
+        </tr>
         @foreach (var month in Model.Dates)
         {
             <tr>
                 <th>
-                    <div>
+                    <div class="month">
                         @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(month[0].Month)
                     </div>
                 </th>

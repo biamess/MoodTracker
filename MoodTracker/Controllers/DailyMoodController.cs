@@ -192,22 +192,22 @@ namespace MoodTracker.Controllers
         public static List<List<DateTime>> GetDatesInYear(int year, int month, int day)
         {
             List<List<DateTime>> dates = new List<List<DateTime>>();
-            int currMonth = month + 1;
-            int currYear = year - 1;
+            int currMonth = month;
+            int currYear = year;
             int lastDay;
 
             for (int i=1; i<=12; i++)
             {
-                if (currMonth == 13)
+                if (currMonth == 0)
                 {
-                    currMonth = 1;
-                    currYear++;
+                    currMonth = 12;
+                    currYear--;
                 }
 
                 lastDay = (currYear == year && currMonth == month) ? day : DateTime.DaysInMonth(currYear, currMonth);
                 dates.Add(GetDatesInMonth(currYear, currMonth, lastDay));
 
-                currMonth += 1;
+                currMonth -= 1;
             }
             return dates;
         }
