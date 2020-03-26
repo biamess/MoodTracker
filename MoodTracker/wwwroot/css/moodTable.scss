@@ -39,28 +39,28 @@ $label: #808080;
     /* End mood table styles */
 
     /* Key styles */
-    .key {
+.key {
+    float: left;
+    /*border: 1px solid $border;*/
+    padding: 8px;
+    margin: 0 0 15px 0;
+
+    .keyRow {
+        padding: 5px 10px 0 10px;
         float: left;
-        border: 1px solid $border;
-        padding: 8px;
-        margin: 5px 0 15px 0;
-
-        .keyRow {
-            padding: 0 20px;
-            float: left;
-        }
-
-        .moodCell {
-            height: 1.5em;
-            width: 1.5em;
-        }
-
-        .moodName {
-            display: inline-block;
-            vertical-align: top;
-            height: 1.5em;
-        }
     }
+
+    .moodCell {
+        height: 1.25em;
+        width: 1.25em;
+    }
+
+    .moodName {
+        display: inline-block;
+        vertical-align: top;
+        line-height:1.25em;
+    }
+}
     /* End key styles */
 
     /* Tooltip styles */
