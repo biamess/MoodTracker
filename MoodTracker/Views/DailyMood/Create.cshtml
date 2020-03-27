@@ -4,9 +4,16 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Log your mood</h1>
+@if (Model.Date == DateTime.Today)
+{
+    <p>How are you today?</p>
+}
+else
+{
+<p>How were you on @Model.Date.ToString("D", System.Globalization.CultureInfo.CurrentCulture)?</p>
+}
 
-<h4>DailyMood</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
