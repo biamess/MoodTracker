@@ -143,6 +143,14 @@ namespace MoodTracker.Controllers
         {
             var mood = await _context.Moods.FindAsync(id);
             _context.Moods.Remove(mood);
+
+            // Delete all DailyMoods that were logged with the deleted mood.
+            List<DailyMood> dailyMoods = await _context.DailyMoods.Where(d => d.MoodId == mood.Id).ToListAsync();
+            foreach (DailyMood dm in dailyMoods)
+            {
+                _context.DailyMoods.Remove(dm);
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
