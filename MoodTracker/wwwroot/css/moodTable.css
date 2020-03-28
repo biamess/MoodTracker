@@ -52,15 +52,11 @@
 .tooltipContainer {
   position: relative; }
 
-.actionTooltip {
-  transition-delay: .3s;
-  opacity: 0;
-  transition: visibility 0.3s linear,opacity 0.3s linear; }
-
 .tooltipContainer .actionTooltip {
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0.4s linear,opacity 0.4s linear;
+  transition-delay: 0.5s;
+  transition: visibility 0.3s linear 0.5s,opacity 0.3s linear 0.5s;
   text-align: center;
   font-size: 16px;
   padding: 3px 0;
