@@ -60,6 +60,21 @@ namespace MoodTracker.Controllers
         }
 
         // GET: DailyMoods/Create
+        public async Task<IActionResult> LogMoodForToday()
+        {
+            DailyMood moodForToday = await _context.DailyMoods.Where(d => d.Date == DateTime.Today).FirstOrDefaultAsync();
+
+            if (moodForToday != null)
+            {
+                return RedirectToAction(nameof(Edit), new { id = moodForToday.Id });
+            }
+            else
+            {
+                return RedirectToAction(nameof(Create), new { date = DateTime.Today } );
+            }
+        }
+
+        // GET: DailyMoods/Create
         public async Task<IActionResult> Create(DateTime? date)
         {
             DateTime defaultDate = date ?? DateTime.Today;
