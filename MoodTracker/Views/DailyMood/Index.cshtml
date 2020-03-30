@@ -31,9 +31,9 @@
         <table class="moodTable">
             <tr>
                 <th></th>
-                @for (var i = 1; i <= 31; i++)
+                @for (var date = 1; date <= 31; date++)
                 {
-                    <th class="date">@i</th>
+                    <th class="date">@date</th>
                 }
             </tr>
             @foreach (var month in Model.Dates)
@@ -47,37 +47,38 @@
 
                     @foreach (var day in month)
                     {
-                        <td>
-                            @if (Model.DailyMoods.ContainsKey(day))
-                            {
-                                <div class="moodCell tooltipContainer" style="@("background-color:" +  Model.DailyMoods[day].Mood.Color + ";")">
-                                    <div class="actionTooltip">
-                                        <div>
-                                            @Html.DisplayFor(model => model.DailyMoods[day].Mood.Name)
-                                        </div>
-                                        <div>
-                                            @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
-                                        </div>
-                                        <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@Model.DailyMoods[day].Id">Details</a> |
-                                        <a asp-action="Delete" asp-route-id="@Model.DailyMoods[day].Id">Delete</a>
+                <td class="tooltipContainer">
+                    @if (Model.DailyMoods.ContainsKey(day))
+                    {
+                        <div class="actionTooltip">
+                            <div>
+                                @Html.DisplayFor(model => model.DailyMoods[day].Mood.Name)
+                            </div>
+                            <div>
+                                @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
+                            </div>
+                            <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@Model.DailyMoods[day].Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@Model.DailyMoods[day].Id">Delete</a>
+                        </div>
+                        <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">
+                            <div class="moodCell" style="@("background-color:" +  Model.DailyMoods[day].Mood.Color + ";")"></div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="Create" asp-route-date="@day">
+                            <div class="moodCell tooltipContainer" style="background-color:#ffffff;">
+                                <div class="actionTooltip">
+                                    <div> Log mood for </div>
+                                    <div>
+                                        @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
                                     </div>
                                 </div>
-                            }
-                            else
-                            {
-                                <a asp-action="Create" asp-route-date="@day">
-                                    <div class="moodCell tooltipContainer" style="background-color:#ffffff;">
-                                        <div class="actionTooltip">
-                                            <div> Log mood for </div>
-                                            <div>
-                                                @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            }
-                        </td>
+                            </div>
+                        </a>
+                    }
+                </td>
                     }
                 </tr>
             }
