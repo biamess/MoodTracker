@@ -61,20 +61,22 @@
                             <a asp-action="Details" asp-route-id="@Model.DailyMoods[day].Id">Details</a> |
                             <a asp-action="Delete" asp-route-id="@Model.DailyMoods[day].Id">Delete</a>
                         </div>
+
                         <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">
                             <div class="moodCell" style="@("background-color:" +  Model.DailyMoods[day].Mood.Color + ";")"></div>
                         </a>
                     }
                     else
                     {
+                        <div class="actionTooltip">
+                            <div> Log mood for </div>
+                            <div>
+                                @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
+                            </div>
+                        </div>
+
                         <a asp-action="Create" asp-route-date="@day">
-                            <div class="moodCell tooltipContainer" style="background-color:#ffffff;">
-                                <div class="actionTooltip">
-                                    <div> Log mood for </div>
-                                    <div>
-                                        @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
-                                    </div>
-                                </div>
+                            <div class="moodCell" style="background-color:#ffffff;">
                             </div>
                         </a>
                     }
