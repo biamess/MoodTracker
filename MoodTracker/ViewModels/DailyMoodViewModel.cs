@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace MoodTracker.ViewModels
@@ -17,6 +18,10 @@ namespace MoodTracker.ViewModels
 
         [BindProperty]
         public int MoodId { get; set; }
+
+        [BindProperty]
+        [DisplayName("Mood Intensity")]
+        public double MoodIntensity { get; set; }
 
         [BindProperty]
         public string Notes { get; set; }

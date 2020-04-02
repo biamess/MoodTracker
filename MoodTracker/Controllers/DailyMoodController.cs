@@ -93,7 +93,7 @@ namespace MoodTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,MoodId,Notes")] DailyMoodViewModel vm)
+        public async Task<IActionResult> Create([Bind("Id,Date,MoodId,MoodIntensity,Notes")] DailyMoodViewModel vm)
         {
            DailyMood dailyMood = new DailyMood();
 
@@ -101,6 +101,7 @@ namespace MoodTracker.Controllers
             {
                 dailyMood.Date = vm.Date;
                 dailyMood.MoodId = vm.MoodId;
+                dailyMood.MoodIntensity = vm.MoodIntensity;
                 dailyMood.Notes = vm.Notes;
                 dailyMood.InputTimestamp = DateTime.Now;
 
@@ -132,7 +133,7 @@ namespace MoodTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,MoodId,Notes")] DailyMood dailyMood)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,MoodId,MoodIntensity,Notes")] DailyMood dailyMood)
         {
             if (id != dailyMood.Id)
             {

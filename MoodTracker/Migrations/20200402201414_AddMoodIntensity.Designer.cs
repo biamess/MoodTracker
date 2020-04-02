@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoodTracker.Data;
 
 namespace MoodTracker.Migrations
 {
     [DbContext(typeof(MoodTrackerContext))]
-    partial class MoodTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20200402201414_AddMoodIntensity")]
+    partial class AddMoodIntensity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,8 +37,8 @@ namespace MoodTracker.Migrations
                     b.Property<int>("MoodId")
                         .HasColumnType("int");
 
-                    b.Property<double>("MoodIntensity")
-                        .HasColumnType("float");
+                    b.Property<int>("MoodIntensity")
+                        .HasColumnType("int");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");

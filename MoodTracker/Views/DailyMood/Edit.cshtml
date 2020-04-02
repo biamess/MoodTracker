@@ -24,6 +24,11 @@
                 <span asp-validation-for="MoodId" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="MoodIntensity" class="control-label"></label>
+                <input type=range min=0 max=1 step="0.01" value="MoodIntensity" asp-for="MoodIntensity" class="form-control slider" />
+                <span asp-validation-for="MoodIntensity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Notes" class="control-label"></label>
                 <input asp-for="Notes" class="form-control" />
                 <span asp-validation-for="Notes" class="text-danger"></span>

@@ -19,6 +19,8 @@ namespace MoodTracker.Models
 
         public string Notes { get; set; }
 
+        public double MoodIntensity { get; set; }
+
         public DateTime InputTimestamp { get; set; }
     }
 }
