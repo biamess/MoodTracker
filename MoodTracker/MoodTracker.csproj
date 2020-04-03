@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200403142716_MoodIntensityAsPercent.cs" />
+    <Compile Remove="Migrations\20200403142716_MoodIntensityAsPercent.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
 
