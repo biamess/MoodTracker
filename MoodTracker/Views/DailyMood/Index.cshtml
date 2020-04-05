@@ -8,6 +8,10 @@
     <link href="@Url.Content("~/css/moodTable.css")" rel="stylesheet" type="text/css" />
 }
 
+@section Scripts {
+    <script src="~/js/moodTable.js" asp-append-version="true"></script>
+}
+
 <h1>Year in Moods</h1>
 
 @if (!Model.DailyMoods.ContainsKey(DateTime.Today))
@@ -16,77 +20,79 @@
         <a asp-action="Create">Log today's mood</a>
     </p>
 }
-    <div class="moodTableContainer">
-        <div class="key">
-            @foreach (var mood in Model.Moods)
-            {
-                <div class="keyRow">
+<div class="moodTableContainer">
+    <div class="key">
+        @foreach (var mood in Model.Moods)
+        {
+            <a asp-controller="Moods" asp-action="Details" asp-route-id="@mood.Id">
+                <div id="@mood.Id" class="keyRow" onmouseenter="onMoodHover(event)" onmouseleave="onMoodHoverOut()">
                     <div class="moodCell" style="@("background-color:" +  mood.Color + ";")"></div>
                     <div class="moodName">
                         @mood.Name
                     </div>
                 </div>
+            </a>
+        }
+    </div>
+    <table class="moodTable">
+        <tr>
+            <th></th>
+            @for (var date = 1; date <= 31; date++)
+            {
+                <th class="date">@date</th>
             }
-        </div>
-        <table class="moodTable">
+        </tr>
+        @foreach (var month in Model.Dates)
+        {
             <tr>
-                <th></th>
-                @for (var date = 1; date <= 31; date++)
+                <th>
+                    <div class="month">
+                        @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(month[0].Month)
+                    </div>
+                </th>
+
+                @foreach (var day in month)
                 {
-                    <th class="date">@date</th>
+                    <td class="tooltipContainer">
+                        @if (Model.DailyMoods.ContainsKey(day))
+                        {
+                            <div class="actionTooltip">
+                                <div>
+                                    @Html.DisplayFor(model => model.DailyMoods[day].Mood.Name)
+                                </div>
+                                <div>
+                                    @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
+                                </div>
+                                <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@Model.DailyMoods[day].Id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@Model.DailyMoods[day].Id">Delete</a>
+                            </div>
+
+                            <a class="@("filterable mood" + Model.DailyMoods[day].MoodId)" asp-action="Details" asp-route-id="@Model.DailyMoods[day].Id">
+                                <div class="moodCell" style="@(
+                                "background-color:" +  Model.DailyMoods[day].Mood.Color +
+                                "; opacity:" + Model.DailyMoods[day].MoodIntensity + ";"
+                                                                )">
+                                </div>
+                            </a>
+                        }
+                        else
+                        {
+                            <div class="actionTooltip">
+                                <div> Log mood for </div>
+                                <div>
+                                    @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
+                                </div>
+                            </div>
+
+                            <a asp-action="Create" asp-route-date="@day">
+                                <div class="moodCell" style="background-color:#ffffff;">
+                                </div>
+                            </a>
+                        }
+                    </td>
                 }
             </tr>
-            @foreach (var month in Model.Dates)
-            {
-                <tr>
-                    <th>
-                        <div class="month">
-                            @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(month[0].Month)
-                        </div>
-                    </th>
-
-                    @foreach (var day in month)
-                    {
-                <td class="tooltipContainer">
-                    @if (Model.DailyMoods.ContainsKey(day))
-                    {
-                        <div class="actionTooltip">
-                            <div>
-                                @Html.DisplayFor(model => model.DailyMoods[day].Mood.Name)
-                            </div>
-                            <div>
-                                @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
-                            </div>
-                            <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@Model.DailyMoods[day].Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@Model.DailyMoods[day].Id">Delete</a>
-                        </div>
-
-                        <a asp-action="Edit" asp-route-id="@Model.DailyMoods[day].Id">
-                            <div class="moodCell" style="@(
-                            "background-color:" +  Model.DailyMoods[day].Mood.Color + 
-                            "; opacity:" + Model.DailyMoods[day].MoodIntensity + ";"
-                                                            )">
-                            </div>
-                        </a>
-                    }
-                    else
-                    {
-                        <div class="actionTooltip">
-                            <div> Log mood for </div>
-                            <div>
-                                @day.ToString("D", System.Globalization.CultureInfo.CurrentCulture)
-                            </div>
-                        </div>
-
-                        <a asp-action="Create" asp-route-date="@day">
-                            <div class="moodCell" style="background-color:#ffffff;">
-                            </div>
-                        </a>
-                    }
-                </td>
-                    }
-                </tr>
-            }
-        </table>
-    </div>
+        }
+    </table>
+</div>

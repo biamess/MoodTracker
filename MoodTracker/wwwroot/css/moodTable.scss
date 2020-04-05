@@ -36,6 +36,14 @@ $label: #808080;
         width: 2em;
         display: inline-block;
     }
+
+    .filterable {
+        transition: opacity 0.3s linear 0.5s;
+    }
+
+    .hide {
+        opacity: 0;
+    }
     /* End mood table styles */
 
     /* Key styles */
@@ -50,6 +58,10 @@ $label: #808080;
         float: left;
     }
 
+    .keyRow:hover {
+        background-color: gainsboro;
+    }
+
     .moodCell {
         height: 1.25em;
         width: 1.25em;
@@ -58,7 +70,12 @@ $label: #808080;
     .moodName {
         display: inline-block;
         vertical-align: top;
-        line-height:1.25em;
+        line-height: 1.25em;
+        color: black;
+    }
+
+    a {
+        text-decoration: none;
     }
 }
     /* End key styles */
@@ -68,28 +85,28 @@ $label: #808080;
         position: relative;
     }
 
-.actionTooltip {
-    visibility: hidden;
-    opacity: 0;
-    transition-delay: 0.5s;
-    transition: visibility 0.3s linear 0.5s,opacity 0.3s linear 0.5s;
-    text-align: center;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 3px;
-    position: absolute;
-    background-color: #000000;
-    color: #ffffff;
-    width: 180px;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -90px;
-    z-index: 1;
+    .actionTooltip {
+        visibility: hidden;
+        opacity: 0;
+        transition-delay: 0.5s;
+        transition: visibility 0.3s linear 0.5s,opacity 0.3s linear 0.5s;
+        text-align: center;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 3px;
+        position: absolute;
+        background-color: #000000;
+        color: #ffffff;
+        width: 180px;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -90px;
+        z-index: 1;
 
-    a {
-        color: #45e6ff;
+        a {
+            color: #45e6ff;
+        }
     }
-}
 
     .actionTooltip::after {
         content: " ";
