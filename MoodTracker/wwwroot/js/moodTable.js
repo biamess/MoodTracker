@@ -1,31 +1,39 @@
 ﻿// Handler for mouse moving into of mood in mood table key.
-// Hide mood cells in the mood table that don't match the mood being hovered over.
-function onMoodHover(event) {
-    let t = event.target;
+function onMoodHover(moodId) {
+    filterMoodCells(moodId);
+}
 
-    while (t && !t.id) {
-        t = t.parentNode;
-    }
+// Handler for mouse moving out of mood in mood table key
+function onMoodHoverOut() {
+    unfilterMoodCells();
+}
 
-    if (t) {
-        let moodId = t.id;
-
-        let cells = document.getElementsByClassName("filterable");
-
-        for (let i = 0; i < cells.length; i++) {
-            if (!cells[i].classList.contains("mood" + moodId)) {
-                cells[i].classList.add("hide");
-            }
+// Hide mood cells in the mood table that don't match the mood with moodId.
+function filterMoodCells(moodId) {
+    let cells = getFilterableMoodCells();
+    for (let i = 0; i < cells.length; i++) {
+        if (!cells[i].classList.contains("mood" + moodId)) {
+            hideMoodCell(cells[i]);
         }
     }
 }
 
-// Handler for mouse moving out of mood in mood table key
-// Un-hide any hidden table cells.
-function onMoodHoverOut() {
-    let cells = document.getElementsByClassName("filterable");
-
+// Un-hide any hidden mood cells.
+function unfilterMoodCells() {
+    let cells = getFilterableMoodCells();
     for (let i = 0; i < cells.length; i++) {
-        cells[i].classList.remove("hide");
+        unhideMoodCell(cells[i]);
     }
+}
+
+function getFilterableMoodCells() {
+    return document.getElementsByClassName("filterable");
+}
+
+function hideMoodCell(cell) {
+    cell.classList.add("hide");
+}
+
+function unhideMoodCell(cell) {
+    cell.classList.remove("hide");
 }

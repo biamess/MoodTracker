@@ -25,7 +25,7 @@
         @foreach (var mood in Model.Moods)
         {
             <a asp-controller="Moods" asp-action="Details" asp-route-id="@mood.Id">
-                <div id="@mood.Id" class="keyRow" onmouseenter="onMoodHover(event)" onmouseleave="onMoodHoverOut()">
+                <div id="@mood.Id" class="keyRow" onmouseenter="onMoodHover(@mood.Id)" onmouseleave="onMoodHoverOut()">
                     <div class="moodCell" style="@("background-color:" +  mood.Color + ";")"></div>
                     <div class="moodName">
                         @mood.Name
