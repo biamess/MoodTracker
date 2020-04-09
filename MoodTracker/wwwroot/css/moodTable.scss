@@ -1,6 +1,12 @@
 ﻿$border: #ede8e8;
 $label: #808080;
 
+.cell {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
 /* Label styles */
 .date {
     text-align:center;
@@ -19,37 +25,55 @@ $label: #808080;
 /* End label styles */
 
 /* Mood table styles */
-    .moodTable {
-        padding: 15px 0;
-        margin: auto;
-    }
+.moodTable {
+    padding: 15px 0;
+    margin: auto;
+}
 
-    .moodTable td {
-        padding: .2rem;
-        margin: 0;
-        border: 1px solid $border;
-        line-height: 1;
-    }
+.moodTable td {
+    padding: .2rem;
+    margin: 0;
+    border: 1px solid $border;
+    line-height: 1;
+}
 
-    .moodCell {
-        height: 2em;
-        width: 2em;
-        display: inline-block;
-    }
+.moodCell {
+    height: 2em;
+    width: 2em;
+    display: inline-block;
+}
 
-    .filterable {
-        transition: opacity 0.3s linear 0.5s;
-    }
+.filterable {
+    transition: opacity 0.3s linear 0.5s;
+}
 
-    .hide {
-        opacity: 0;
-    }
-    /* End mood table styles */
+.hide {
+    opacity: 0;
+}
+/* End mood table styles */
 
-    /* Key styles */
+/* Event Styles */
+.eventIndicator {
+    height: 1em;
+    width: 1em;
+    background-color: #bbb;
+    border: 1px solid white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%); 
+    z-index: 1;
+}
+
+.eventIndicator:hover {
+    background-color: black;
+}
+/* End Event Styles */
+
+/* Key styles */
 .key {
     float: left;
-    /*border: 1px solid $border;*/
     padding: 8px;
     margin: 0 0 15px 0;
 
@@ -78,54 +102,55 @@ $label: #808080;
         text-decoration: none;
     }
 }
-    /* End key styles */
+/* End key styles */
 
-    /* Tooltip styles */
-    .tooltipContainer {
-        position: relative;
+/* Tooltip styles */
+.tooltipContainer {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.actionTooltip {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.3s linear 0.5s,opacity 0.3s linear 0.5s;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 3px;
+    position: absolute;
+    background-color: #000000;
+    color: #ffffff;
+    width: 180px;
+    bottom: 110%;
+    left: 50%;
+    margin-left: -90px;
+    z-index: 2;
+
+    a {
+        color: #45e6ff;
     }
+}
 
-    .actionTooltip {
-        visibility: hidden;
-        opacity: 0;
-        transition-delay: 0.5s;
-        transition: visibility 0.3s linear 0.5s,opacity 0.3s linear 0.5s;
-        text-align: center;
-        font-size: 16px;
-        padding: 5px;
-        border-radius: 3px;
-        position: absolute;
-        background-color: #000000;
-        color: #ffffff;
-        width: 180px;
-        bottom: 100%;
-        left: 50%;
-        margin-left: -90px;
-        z-index: 1;
+.actionTooltip::after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
 
-        a {
-            color: #45e6ff;
-        }
-    }
+.tooltipContainer:hover .actionTooltip {
+    visibility: visible;
+    opacity: 1;
+}
 
-    .actionTooltip::after {
-        content: " ";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        margin-left: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: black transparent transparent transparent;
-    }
-
-    .tooltipContainer:hover .actionTooltip {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    .actionTooltip:hover {
-        visibility: visible;
-    }
-    /* End Tooltip styles */
+.actionTooltip:hover {
+    visibility: visible;
+}
+/* End Tooltip styles */
 

@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200403142716_MoodIntensityAsPercent.cs" />
     <Compile Remove="Migrations\20200403142716_MoodIntensityAsPercent.Designer.cs" />
+    <Compile Remove="Migrations\20200409171258_RenameLifeEventClass.cs" />
+    <Compile Remove="Migrations\20200409171258_RenameLifeEventClass.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

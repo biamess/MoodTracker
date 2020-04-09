@@ -14,11 +14,14 @@ namespace MoodTracker.Data
 
         public DbSet<Mood> Moods { get; set; }
 
+        public DbSet<Event> Events { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<DailyMood>().ToTable("DailyMood");
             modelBuilder.Entity<Mood>().ToTable("Mood");
+            modelBuilder.Entity<Event>().ToTable("Event");
         }
     }
 }

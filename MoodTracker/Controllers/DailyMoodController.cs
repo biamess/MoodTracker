@@ -32,6 +32,10 @@ namespace MoodTracker.Controllers
                 .AsNoTracking()
                 .ToDictionaryAsync(k => k.Date, v => v),
 
+                Events = await _context.Events
+                .AsNoTracking()
+                .ToDictionaryAsync(k => k.Date, v => v),
+
                 Moods = await _context.Moods.ToListAsync<Mood>()
         };
 

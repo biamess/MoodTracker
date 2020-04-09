@@ -1,4 +1,9 @@
-﻿/* Label styles */
+﻿.cell {
+  position: relative;
+  height: 100%;
+  width: 100%; }
+
+/* Label styles */
 .date {
   text-align: center;
   font-weight: 500;
@@ -36,10 +41,26 @@
   opacity: 0; }
 
 /* End mood table styles */
+/* Event Styles */
+.eventIndicator {
+  height: 1em;
+  width: 1em;
+  background-color: #bbb;
+  border: 1px solid white;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  z-index: 1; }
+
+.eventIndicator:hover {
+  background-color: black; }
+
+/* End Event Styles */
 /* Key styles */
 .key {
   float: left;
-  /*border: 1px solid $border;*/
   padding: 8px;
   margin: 0 0 15px 0; }
   .key .keyRow {
@@ -61,12 +82,13 @@
 /* End key styles */
 /* Tooltip styles */
 .tooltipContainer {
-  position: relative; }
+  position: relative;
+  height: 100%;
+  width: 100%; }
 
 .actionTooltip {
   visibility: hidden;
   opacity: 0;
-  transition-delay: 0.5s;
   transition: visibility 0.3s linear 0.5s,opacity 0.3s linear 0.5s;
   text-align: center;
   font-size: 16px;
@@ -76,10 +98,10 @@
   background-color: #000000;
   color: #ffffff;
   width: 180px;
-  bottom: 100%;
+  bottom: 110%;
   left: 50%;
   margin-left: -90px;
-  z-index: 1; }
+  z-index: 2; }
   .actionTooltip a {
     color: #45e6ff; }
 
