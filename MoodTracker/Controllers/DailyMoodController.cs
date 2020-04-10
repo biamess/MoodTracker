@@ -20,28 +20,6 @@ namespace MoodTracker.Controllers
             _context = context;
         }
 
-        // GET: DailyMoods
-        public async Task<IActionResult> Index()
-        {
-            DailyMoodIndexViewModel vm = new DailyMoodIndexViewModel
-            {
-                Dates = GetDatesInYear(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
-
-                DailyMoods = await _context.DailyMoods
-                .Include(d => d.Mood)
-                .AsNoTracking()
-                .ToDictionaryAsync(k => k.Date, v => v),
-
-                Events = await _context.Events
-                .AsNoTracking()
-                .ToDictionaryAsync(k => k.Date, v => v),
-
-                Moods = await _context.Moods.ToListAsync<Mood>()
-        };
-
-            return View(vm);
-        }
-
         // GET: DailyMoods/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -111,7 +89,7 @@ namespace MoodTracker.Controllers
 
                 _context.Add(dailyMood);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "YearInMoods");
             }
 
             vm.MoodList = new SelectList(await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name), "Key", "Value");
@@ -162,7 +140,7 @@ namespace MoodTracker.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "YearInMoods");
             }
 
             DailyMoodViewModel vm = await GetDailyMoodViewModel(id);
@@ -195,55 +173,12 @@ namespace MoodTracker.Controllers
             var dailyMood = await _context.DailyMoods.FindAsync(id);
             _context.DailyMoods.Remove(dailyMood);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "YearInMoods");
         }
 
         private bool DailyMoodExists(int id)
         {
             return _context.DailyMoods.Any(e => e.Id == id);
-        }
-
-        /// <summary>
-        /// For a given year and month, return a <list type="<list<DateTime>>">list</list> containing all the dates of the past year.
-        /// </summary>
-        /// <param name="year">Year</param>
-        /// <param name="month">Month (0-11)</param>
-        /// <returns><list type="<list<DateTime>>">list</list> containing the dates of the past 12 months (not including future dates this month).</returns>
-        public static List<List<DateTime>> GetDatesInYear(int year, int month, int day)
-        {
-            List<List<DateTime>> dates = new List<List<DateTime>>();
-            int currMonth = month;
-            int currYear = year;
-            int lastDay;
-
-            for (int i=1; i<=12; i++)
-            {
-                if (currMonth == 0)
-                {
-                    currMonth = 12;
-                    currYear--;
-                }
-
-                lastDay = (currYear == year && currMonth == month) ? day : DateTime.DaysInMonth(currYear, currMonth);
-                dates.Add(GetDatesInMonth(currYear, currMonth, lastDay));
-
-                currMonth -= 1;
-            }
-            return dates;
-        }
-
-        /// <summary>
-        /// Get a <list type="<list<DateTime>>"> of days in the given month and year, up to the given day.
-        /// </summary>
-        /// <param name="year">Year to get dates for.</param>
-        /// <param name="month">Month to get dates for.</param>
-        /// <param name="day">Ending day for the range of dates.</param>
-        /// <returns><list type="<list<DateTime>>"> of days in the given month and year, up to the given day.</returns>
-        public static List<DateTime> GetDatesInMonth(int year, int month, int day)
-        {
-            return Enumerable.Range(1, day)  // Days: 1, 2 ... day
-                             .Select(day => new DateTime(year, month, day)) // Map each day to a date
-                             .ToList();
         }
 
         public async Task<DailyMoodViewModel> GetDailyMoodViewModel(int dailyMoodId)

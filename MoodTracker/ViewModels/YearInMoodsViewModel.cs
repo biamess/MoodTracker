@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MoodTracker.ViewModels
 {
-    public class DailyMoodIndexViewModel
+    public class YearInMoodsViewModel
     {
         public List<List<DateTime>> Dates { get; set; }
 
