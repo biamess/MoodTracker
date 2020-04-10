@@ -96,13 +96,13 @@
 
                             @if (Model.Events.ContainsKey(day))
                             {
-                                <div class="eventIndicator">
+                                <a class="eventIndicator" asp-controller="Events" asp-action="Details" asp-route-id="@Model.Events[day].Id">
                                     <div class="tooltipContainer">
                                         <div class="actionTooltip">
                                             @Html.DisplayFor(model => model.Events[day].Name)
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             }
                         </div>
                     </td>
