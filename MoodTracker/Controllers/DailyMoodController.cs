@@ -52,7 +52,7 @@ namespace MoodTracker.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(Create), new { date = DateTime.Today } );
+                return RedirectToAction(nameof(Create), new { date = DateTime.Today });
             }
         }
 
@@ -61,11 +61,7 @@ namespace MoodTracker.Controllers
         {
             DateTime defaultDate = date ?? DateTime.Today;
 
-            DailyMoodViewModel dailyMoodVM = new DailyMoodViewModel
-            {
-                Date = defaultDate.Date,
-                MoodList = new SelectList(await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name), "Key", "Value")
-            };
+            DailyMoodViewModel dailyMoodVM = await GetDailyMoodVMForCreate(defaultDate.Date);
 
             return View(dailyMoodVM);
         }
@@ -77,7 +73,7 @@ namespace MoodTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Date,MoodId,MoodIntensity,Notes")] DailyMoodViewModel vm)
         {
-           DailyMood dailyMood = new DailyMood();
+            DailyMood dailyMood = new DailyMood();
 
             if (ModelState.IsValid)
             {
@@ -105,7 +101,7 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            DailyMoodViewModel vm = await GetDailyMoodViewModel(id.GetValueOrDefault());
+            DailyMoodViewModel vm = await GetDailyMoodVM(id.GetValueOrDefault());
 
             return View(vm);
         }
@@ -143,7 +139,7 @@ namespace MoodTracker.Controllers
                 return RedirectToAction(nameof(Index), "YearInMoods");
             }
 
-            DailyMoodViewModel vm = await GetDailyMoodViewModel(id);
+            DailyMoodViewModel vm = await GetDailyMoodVM(id);
             return View(vm);
         }
 
@@ -181,15 +177,13 @@ namespace MoodTracker.Controllers
             return _context.DailyMoods.Any(e => e.Id == id);
         }
 
-        public async Task<DailyMoodViewModel> GetDailyMoodViewModel(int dailyMoodId)
+        public async Task<DailyMoodViewModel> GetDailyMoodVM(int dailyMoodId)
         {
             var dailyMood = await _context.DailyMoods.FindAsync(dailyMoodId);
             if (dailyMood == null)
             {
                 return null;
             }
-
-            Dictionary<int, string> moods = await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name);
 
             DailyMoodViewModel dailyMoodVM = new DailyMoodViewModel
             {
@@ -198,9 +192,60 @@ namespace MoodTracker.Controllers
                 Date = dailyMood.Date,
                 MoodId = dailyMood.MoodId,
                 Notes = dailyMood.Notes,
-                MoodList = new SelectList(moods, "Key", "Value", moods[dailyMood.MoodId])
-            };
+                MoodIntensity = dailyMood.MoodIntensity,
+                MoodList = await getMoodSelectList(dailyMood.MoodId)
+        };
             return dailyMoodVM;
+        }
+
+        public async Task<DailyMoodViewModel> GetDailyMoodVMForCreate(DateTime date)
+        {
+            DailyMoodViewModel dailyMoodVM = new DailyMoodViewModel
+            {
+                Date = date,
+                MoodList = await getMoodSelectList()
+            };
+
+            return dailyMoodVM;
+        }
+
+        /// <summary>
+        /// Get a <see cref="SelectList"/> of user-defined moods.
+        /// </summary>
+        /// <returns>A selectlist of the user-defined moods. Data value is the mood Id, data text is the mood name.</returns>
+        private async Task<SelectList> getMoodSelectList()
+        {
+            Dictionary<int, string> moods = await getMoodsDict();
+            return new SelectList(moods, "Key", "Value");
+        }
+
+        /// <summary>
+        /// Get a <see cref="SelectList"/> of user-defined moods.
+        /// </summary>
+        /// <param name="id">Id of mood to select in the <see cref="SelectList"/>.</param>
+        /// <returns>A selectlist of the user-defined moods. Data value is the mood Id, data text is the mood name.</returns>
+        private async Task<SelectList> getMoodSelectList(int id)
+        {
+            Dictionary<int, string> moods = await getMoodsDict();
+
+            if (!moods.ContainsKey(id))
+            {
+                return new SelectList(moods, "Key", "Value");
+            }
+            else
+            {
+                return new SelectList(moods, "Key", "Value", id);
+            }
+        }
+
+        /// <summary>
+        /// Get a <see cref="Dictionary"/> of the user-defined moods.
+        /// </summary>
+        /// <returns> <see cref="Dictionary"/> of user-defined moods, with mood Ids as keys and mood names as values.</returns>
+        private async Task<Dictionary<int,string>> getMoodsDict()
+        {
+            Dictionary<int, string> moods = await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name);
+            return moods;
         }
     }
 }

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoodTracker.Data;
 using MoodTracker.Models;
-using MoodTracker.ViewModels;
+
 
 namespace MoodTracker.Controllers
 {
@@ -144,12 +141,7 @@ namespace MoodTracker.Controllers
             var mood = await _context.Moods.FindAsync(id);
             _context.Moods.Remove(mood);
 
-            // Delete all DailyMoods that were logged with the deleted mood.
-            List<DailyMood> dailyMoods = await _context.DailyMoods.Where(d => d.MoodId == mood.Id).ToListAsync();
-            foreach (DailyMood dm in dailyMoods)
-            {
-                _context.DailyMoods.Remove(dm);
-            }
+            await deleteDailyMoodsWithMood(mood.Id);
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -158,6 +150,15 @@ namespace MoodTracker.Controllers
         private bool MoodExists(int id)
         {
             return _context.Moods.Any(e => e.Id == id);
+        }
+
+        private async Task deleteDailyMoodsWithMood(int moodId)
+        {
+            List<DailyMood> dailyMoods = await _context.DailyMoods.Where(d => d.MoodId == moodId).ToListAsync();
+            foreach (DailyMood dm in dailyMoods)
+            {
+                _context.DailyMoods.Remove(dm);
+            }
         }
     }
 }

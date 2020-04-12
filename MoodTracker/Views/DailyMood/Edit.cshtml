@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="MoodIntensity" class="control-label"></label>
-                <input type=range min=0.01 max=1 step=.01 value="MoodIntensity" asp-for="MoodIntensity" class="form-control slider" />
+                <input type=range min=0.01 max=1 step=.01 value="@Model.MoodIntensity" asp-for="MoodIntensity" class="form-control slider" />
                 <span asp-validation-for="MoodIntensity" class="text-danger"></span>
             </div>
             <div class="form-group">
