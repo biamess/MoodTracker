@@ -6,6 +6,20 @@ namespace MoodTracker.Utilities
 {
     public static class Calendar
     {
+        public static DateTime GetMoodCalendarStartDate()
+        {
+            const int startingDay = 1;
+            int startingMonth = DateTime.Today.Month == 12 ? 1 : DateTime.Today.Month + 1;
+            int startingYear = startingMonth == 1 ? DateTime.Today.Year : DateTime.Today.Year - 1;
+
+            return new DateTime(startingYear, startingMonth, startingDay);
+        }
+
+        public static DateTime GetMoodCalendarEndDate()
+        {
+            return DateTime.Today;
+        }
+
         /// <summary>
         /// For a given year and month, return a <list type="<list<DateTime>>">list</list> containing all the dates, 
         /// up to today, in the past 12 months.

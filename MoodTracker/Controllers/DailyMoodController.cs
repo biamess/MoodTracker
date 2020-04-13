@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoodTracker.Data;
 using MoodTracker.Models;
+using MoodTracker.Services;
 using MoodTracker.ViewModels;
 
 namespace MoodTracker.Controllers
 {
     public class DailyMoodController : Controller
     {
-        private readonly MoodTrackerContext _context;
+        private readonly DailyMoodService _dailyMoodService;
+        private readonly MoodService _moodService;
 
         public DailyMoodController(MoodTrackerContext context)
         {
-            _context = context;
+            _dailyMoodService = new DailyMoodService(context);
+            _moodService = new MoodService(context);
         }
 
         // GET: DailyMoods/Details/5
@@ -28,10 +30,7 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            var dailyMood = await _context.DailyMoods
-                .AsNoTracking()
-                .Include(d => d.Mood)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var dailyMood = await _dailyMoodService.GetUntrackedDailyMoodWithId(id.GetValueOrDefault());
 
             if (dailyMood == null)
             {
@@ -44,7 +43,7 @@ namespace MoodTracker.Controllers
         // GET: DailyMoods/Create
         public async Task<IActionResult> LogMoodForToday()
         {
-            DailyMood moodForToday = await _context.DailyMoods.Where(d => d.Date == DateTime.Today).FirstOrDefaultAsync();
+            DailyMood moodForToday = await _dailyMoodService.GetUntrackedDailyMoodWithDate(DateTime.Today);
 
             if (moodForToday != null)
             {
@@ -83,12 +82,12 @@ namespace MoodTracker.Controllers
                 dailyMood.Notes = vm.Notes;
                 dailyMood.InputTimestamp = DateTime.Now;
 
-                _context.Add(dailyMood);
-                await _context.SaveChangesAsync();
+                _dailyMoodService.AddDailyMood(dailyMood);
+                await _dailyMoodService.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), "YearInMoods");
             }
 
-            vm.MoodList = new SelectList(await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name), "Key", "Value");
+            vm.MoodList = new SelectList(await _moodService.GetMoodNameDict());
 
             return View(vm);
         }
@@ -122,12 +121,12 @@ namespace MoodTracker.Controllers
             {
                 try
                 {
-                    _context.Update(dailyMood);
-                    await _context.SaveChangesAsync();
+                    _dailyMoodService.UpdateDailyMood(dailyMood);
+                    await _dailyMoodService.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DailyMoodExists(dailyMood.Id))
+                    if (!_dailyMoodService.DailyMoodExists(dailyMood.Id))
                     {
                         return NotFound();
                     }
@@ -151,8 +150,8 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            var dailyMood = await _context.DailyMoods
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var dailyMood = await _dailyMoodService.GetTrackedDailyMoodWithId(id.GetValueOrDefault());
+
             if (dailyMood == null)
             {
                 return NotFound();
@@ -166,20 +165,15 @@ namespace MoodTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var dailyMood = await _context.DailyMoods.FindAsync(id);
-            _context.DailyMoods.Remove(dailyMood);
-            await _context.SaveChangesAsync();
+            var dailyMood = await _dailyMoodService.GetTrackedDailyMoodWithId(id);
+            _dailyMoodService.RemoveDailyMood(dailyMood);
+            await _dailyMoodService.SaveChangesAsync();
             return RedirectToAction(nameof(Index), "YearInMoods");
         }
 
-        private bool DailyMoodExists(int id)
+        public async Task<DailyMoodViewModel> GetDailyMoodVM(int id)
         {
-            return _context.DailyMoods.Any(e => e.Id == id);
-        }
-
-        public async Task<DailyMoodViewModel> GetDailyMoodVM(int dailyMoodId)
-        {
-            var dailyMood = await _context.DailyMoods.FindAsync(dailyMoodId);
+            var dailyMood = await _dailyMoodService.GetUntrackedDailyMoodWithId(id);
             if (dailyMood == null)
             {
                 return null;
@@ -193,7 +187,7 @@ namespace MoodTracker.Controllers
                 MoodId = dailyMood.MoodId,
                 Notes = dailyMood.Notes,
                 MoodIntensity = dailyMood.MoodIntensity,
-                MoodList = await getMoodSelectList(dailyMood.MoodId)
+                MoodList = await GetMoodSelectList(dailyMood.MoodId)
         };
             return dailyMoodVM;
         }
@@ -203,7 +197,7 @@ namespace MoodTracker.Controllers
             DailyMoodViewModel dailyMoodVM = new DailyMoodViewModel
             {
                 Date = date,
-                MoodList = await getMoodSelectList()
+                MoodList = await GetMoodSelectList()
             };
 
             return dailyMoodVM;
@@ -213,9 +207,9 @@ namespace MoodTracker.Controllers
         /// Get a <see cref="SelectList"/> of user-defined moods.
         /// </summary>
         /// <returns>A selectlist of the user-defined moods. Data value is the mood Id, data text is the mood name.</returns>
-        private async Task<SelectList> getMoodSelectList()
+        private async Task<SelectList> GetMoodSelectList()
         {
-            Dictionary<int, string> moods = await getMoodsDict();
+            Dictionary<int, string> moods = await _moodService.GetMoodNameDict();
             return new SelectList(moods, "Key", "Value");
         }
 
@@ -224,9 +218,9 @@ namespace MoodTracker.Controllers
         /// </summary>
         /// <param name="id">Id of mood to select in the <see cref="SelectList"/>.</param>
         /// <returns>A selectlist of the user-defined moods. Data value is the mood Id, data text is the mood name.</returns>
-        private async Task<SelectList> getMoodSelectList(int id)
+        private async Task<SelectList> GetMoodSelectList(int id)
         {
-            Dictionary<int, string> moods = await getMoodsDict();
+            Dictionary<int, string> moods = await _moodService.GetMoodNameDict();
 
             if (!moods.ContainsKey(id))
             {
@@ -236,16 +230,6 @@ namespace MoodTracker.Controllers
             {
                 return new SelectList(moods, "Key", "Value", id);
             }
-        }
-
-        /// <summary>
-        /// Get a <see cref="Dictionary"/> of the user-defined moods.
-        /// </summary>
-        /// <returns> <see cref="Dictionary"/> of user-defined moods, with mood Ids as keys and mood names as values.</returns>
-        private async Task<Dictionary<int,string>> getMoodsDict()
-        {
-            Dictionary<int, string> moods = await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name);
-            return moods;
         }
     }
 }
