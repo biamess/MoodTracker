@@ -5,23 +5,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoodTracker.Data;
 using MoodTracker.Models;
+using MoodTracker.Services;
 
 
 namespace MoodTracker.Controllers
 {
     public class MoodsController : Controller
     {
-        private readonly MoodTrackerContext _context;
+        private readonly MoodService _moodService;
 
         public MoodsController(MoodTrackerContext context)
         {
-            _context = context;
+            _moodService = new MoodService(context);
         }
 
         // GET: Moods
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Moods.ToListAsync());
+            return View(await _moodService.LoadAllMoods());
         }
 
         // GET: Moods/Details/5
@@ -32,8 +33,7 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            var mood = await _context.Moods
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var mood = await _moodService.GetUntrackedMoodWithId(id.GetValueOrDefault());
             if (mood == null)
             {
                 return NotFound();
@@ -57,8 +57,8 @@ namespace MoodTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(mood);
-                await _context.SaveChangesAsync();
+                _moodService.AddMood(mood);
+                await _moodService.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(mood);
@@ -72,7 +72,7 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            var mood = await _context.Moods.FindAsync(id);
+            var mood = await _moodService.GetTrackedMoodWithId(id.GetValueOrDefault());
             if (mood == null)
             {
                 return NotFound();
@@ -96,12 +96,12 @@ namespace MoodTracker.Controllers
             {
                 try
                 {
-                    _context.Update(mood);
-                    await _context.SaveChangesAsync();
+                    _moodService.UpdateMood(mood);
+                    await _moodService.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MoodExists(mood.Id))
+                    if (!_moodService.MoodExists(mood.Id))
                     {
                         return NotFound();
                     }
@@ -123,8 +123,7 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            var mood = await _context.Moods
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var mood = await _moodService.GetUntrackedMoodWithId(id.GetValueOrDefault());
             if (mood == null)
             {
                 return NotFound();
@@ -138,27 +137,13 @@ namespace MoodTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mood = await _context.Moods.FindAsync(id);
-            _context.Moods.Remove(mood);
+            var mood = await _moodService.GetTrackedMoodWithId(id);
+            _moodService.RemoveMood(mood);
 
-            await deleteDailyMoodsWithMood(mood.Id);
+            await _moodService.DeleteDailyMoodsWithMood(mood.Id);
 
-            await _context.SaveChangesAsync();
+            await _moodService.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool MoodExists(int id)
-        {
-            return _context.Moods.Any(e => e.Id == id);
-        }
-
-        private async Task deleteDailyMoodsWithMood(int moodId)
-        {
-            List<DailyMood> dailyMoods = await _context.DailyMoods.Where(d => d.MoodId == moodId).ToListAsync();
-            foreach (DailyMood dm in dailyMoods)
-            {
-                _context.DailyMoods.Remove(dm);
-            }
         }
     }
 }
