@@ -35,7 +35,7 @@ namespace MoodTracker.Controllers
                 Events = await _eventService
                 .GetDateDictOfEventsInDateRange(Calendar.GetMoodCalendarStartDate(), Calendar.GetMoodCalendarEndDate()),
 
-                Moods = await _moodService.LoadAllMoods()
+                Moods = await _moodService.GetAllMoods()
             };
 
             return View(vm);

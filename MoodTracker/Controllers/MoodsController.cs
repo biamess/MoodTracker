@@ -22,7 +22,7 @@ namespace MoodTracker.Controllers
         // GET: Moods
         public async Task<IActionResult> Index()
         {
-            return View(await _moodService.LoadAllMoods());
+            return View(await _moodService.GetAllMoods());
         }
 
         // GET: Moods/Details/5

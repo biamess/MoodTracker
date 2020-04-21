@@ -73,7 +73,7 @@ namespace MoodTracker.Services
             return await _context.Moods.ToDictionaryAsync(k => k.Id, v => v.Name);
         }
 
-        public async Task<List<Mood>> LoadAllMoods()
+        public async Task<List<Mood>> GetAllMoods()
         {
             List<Mood> moods = await _context.Moods
                 .AsNoTracking()

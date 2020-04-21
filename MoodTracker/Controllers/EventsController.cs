@@ -7,22 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoodTracker.Data;
 using MoodTracker.Models;
+using MoodTracker.Services;
 
 namespace MoodTracker.Controllers
 {
     public class EventsController : Controller
     {
-        private readonly MoodTrackerContext _context;
+        private readonly EventService _eventService;
 
         public EventsController(MoodTrackerContext context)
         {
-            _context = context;
+            _eventService = new EventService(context);
         }
 
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Events.ToListAsync());
+            return View(await _eventService.GetAllEvents());
         }
 
         // GET: Events/Details/5
@@ -33,8 +34,7 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var @event = await _eventService.GetUntrackedEventWithId(id.GetValueOrDefault());
             if (@event == null)
             {
                 return NotFound();
@@ -58,8 +58,8 @@ namespace MoodTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(@event);
-                await _context.SaveChangesAsync();
+                _eventService.AddEvent(@event);
+                await _eventService.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(@event);
@@ -73,7 +73,7 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events.FindAsync(id);
+            var @event = await _eventService.GetUntrackedEventWithId(id.GetValueOrDefault());
             if (@event == null)
             {
                 return NotFound();
@@ -97,12 +97,12 @@ namespace MoodTracker.Controllers
             {
                 try
                 {
-                    _context.Update(@event);
-                    await _context.SaveChangesAsync();
+                    _eventService.UpdateEvent(@event);
+                    await _eventService.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EventExists(@event.Id))
+                    if (!_eventService.EventExists(@event.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +124,7 @@ namespace MoodTracker.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var @event = await _eventService.GetUntrackedEventWithId(id.GetValueOrDefault());
             if (@event == null)
             {
                 return NotFound();
@@ -139,15 +138,10 @@ namespace MoodTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @event = await _context.Events.FindAsync(id);
-            _context.Events.Remove(@event);
-            await _context.SaveChangesAsync();
+            var @event = await _eventService.GetTrackedEventWithId(id);
+            _eventService.RemoveEvent(@event);
+            await _eventService.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool EventExists(int id)
-        {
-            return _context.Events.Any(e => e.Id == id);
         }
     }
 }

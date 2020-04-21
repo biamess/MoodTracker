@@ -65,11 +65,11 @@ namespace MoodTracker.Services
 
         public async Task<Dictionary<DateTime, DailyMood>> GetDateDictOfDailyMoodsInDateRange(DateTime startDate, DateTime endDate)
         {
-            List<DailyMood> dailyMoods = await LoadDailyMoodsInDateRange(startDate, endDate);
+            List<DailyMood> dailyMoods = await GetDailyMoodsInDateRange(startDate, endDate);
             return dailyMoods.ToDictionary(d => d.Date);
         }
 
-        public async Task<List<DailyMood>> LoadDailyMoodsInDateRange(DateTime startDate, DateTime endDate)
+        public async Task<List<DailyMood>> GetDailyMoodsInDateRange(DateTime startDate, DateTime endDate)
         {
             List<DailyMood> dailyMoods = await _context.DailyMoods
                 .Include(d => d.Mood)
